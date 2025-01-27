@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Game Scoreboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grocery Shopping Game</h1>
+        <h2>Live Scoreboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Team Name</th>
+                    <th>Total Items Bought</th>
+                    <th>Total Money Spent (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="scoreboardBody">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const apiUrl = "AKfycbxZ_JOGfB7CwylmwvXG3AYFerlUiTjWR-YWDBHFT915gCqxUbmc2qTSswImzF-wqbO_"; // Replace with your Apps Script URL
+
+        async function fetchScoreboardData() {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            const scoreboardBody = document.getElementById("scoreboardBody");
+            scoreboardBody.innerHTML = "";
+
+            data.forEach(team => {
+                const row = `<tr>
+                    <td>${team.teamName}</td>
+                    <td>${team.itemsBought}</td>
+                    <td>₹${team.moneySpent}</td>
+                </tr>`;
+                scoreboardBody.innerHTML += row;
+            });
+        }
+
+        // Fetch data on page load
+        fetchScoreboardData();
+
+        // Refresh the scoreboard every 30 seconds
+        setInterval(fetchScoreboardData, 30000);
+    </script>
+</body>
+</html>
